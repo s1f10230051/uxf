@@ -1,57 +1,36 @@
-import React, { useState } from 'react';
-import TimedPicker, { type ExperimentResult } from './components/TimedPicker';
-import { CSVLink } from 'react-csv'; // CSV書き出しライブラリ
-import './App.css';
+import { useState } from 'react';
+import ShapeEditor from './components/ShapeEditor';
 
 function App() {
-  // 1. 全ての実験結果を保存する state
-  const [results, setResults] = useState<ExperimentResult[]>([]);
-
-  // 2. TimedPicker から結果を受け取るための関数
-  const handleRecordResult = (result: ExperimentResult) => {
-    setResults((prevResults) => [...prevResults, result]);
-  };
+  const [currentPath, setCurrentPath] = useState<string>('');
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>色彩選定の実験</h1>
-
-        <div className="picker-container">
-          {/* 3. 実験ブースを3つ並べる (お題は自由に変更可能) */}
-          <TimedPicker
-            shapeType="circle"
-            taskName="柔らかい色"
-            onRecord={handleRecordResult}
-          />
-          <TimedPicker
-            shapeType="triangle"
-            taskName="緊張感のある色"
-            onRecord={handleRecordResult}
-          />
-          <TimedPicker
-            shapeType="triangle"
-            taskName="柔らかい色"
-            onRecord={handleRecordResult}
+    <div style={{ padding: '20px' }}>
+      <h1>図形生成ツール</h1>
+      
+      <div style={{ display: 'flex', gap: '40px' }}>
+        {/* 1. 作る場所 */}
+        <div>
+          <h3>エディタ</h3>
+          <ShapeEditor 
+            onUpdatePath={(d) => setCurrentPath(d)} 
           />
         </div>
 
-        {/* 4. 結果の書き出しエリア */}
-        <div className="results-area">
-          <h2>実験結果 ({results.length}件)</h2>
-          {/* CSVLinkコンポーネントを設置 */}
-          <CSVLink
-            data={results}
-            filename={"color-picker-results.csv"}
-            className="csv-button"
-          >
-            Excel (CSV) に書き出す
-          </CSVLink>
-
-          {/* 記録されたデータの簡易表示 */}
-          <pre>{JSON.stringify(results, null, 2)}</pre>
+        {/* 2. 使う場所（プレビュー） */}
+        <div>
+          <h3>生成された図形 (プレビュー)</h3>
+          {/* 生成された path データを使用 */}
+          <svg width="300" height="300" style={{ border: '1px solid #eee' }}>
+            <path d={currentPath} fill="#e74c3c" />
+          </svg>
+          
+          <div style={{ marginTop: '20px', maxWidth: '300px', wordBreak: 'break-all' }}>
+             <h4>Pathデータ:</h4>
+             <code>{currentPath}</code>
+          </div>
         </div>
-      </header>
+      </div>
     </div>
   );
 }
