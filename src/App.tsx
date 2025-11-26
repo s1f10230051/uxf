@@ -1,49 +1,66 @@
 import { useState } from 'react';
 import { SketchPicker } from 'react-color';
 import { type ColorResult } from 'react-color';
-import ShapeEditor from './components/ShapeEditor';      // 前回作成したエディタ
-import SvgShapeDisplay from './components/SvgShapeDisplay'; // 今回作成した表示用
+import ShapeEditor from './components/ShapeEditor';
+import SvgShapeDisplay from './components/SvgShapeDisplay';
+import PresetSelector from './components/PresetSelector';
 import './App.css';
 
-function App() {
-  // 1. 図形の形 (SVGパス文字列) を管理する state
-  const [customPath, setCustomPath] = useState<string>('');
+// 座標の型定義
+type Point = { x: number; y: number };
 
-  // 2. 色を管理する state
+function App() {
+  const [customPath, setCustomPath] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('#3498db');
+
+  // ▼▼▼ エディタに渡すためのデータ ▼▼▼
+  const [editorPoints, setEditorPoints] = useState<Point[] | undefined>(undefined);
+  const [editorSmooth, setEditorSmooth] = useState<boolean | undefined>(undefined);
+
+  // プリセットが選ばれた時の処理
+  const handlePresetSelect = (points: Point[], isSmooth: boolean) => {
+    // 座標データをセットすると、ShapeEditor内のuseEffectが反応して反映される
+    setEditorPoints(points);
+    setEditorSmooth(isSmooth);
+  };
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>カスタムシェイプ・カラーピッカー</h1>
-        <p>Step 1: 形を作る → Step 2: 色を選ぶ</p>
 
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '50px', padding: '20px' }}>
           
-          {/* --- 左側: Step 1 図形作成エリア --- */}
           <div className="section" style={{ width: '350px' }}>
-            <h2>Step 1: 形を描く</h2>
+            <h2>Step 1: 形を決める</h2>
+            
+            <div style={{ marginBottom: '15px' }}>
+              <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>サンプルからロード:</p>
+              {/* onSelect で座標と曲線フラグを受け取る */}
+              <PresetSelector onSelect={handlePresetSelect} />
+            </div>
+
+            <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>調整する:</p>
             <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '8px', border: '2px solid #333' }}>
-              {/* エディタで操作した結果(パス)を setCustomPath で受け取る */}
+              {/* externalPoints などを渡す */}
               <ShapeEditor 
                 width={300} 
                 height={300} 
                 onUpdatePath={(path) => setCustomPath(path)} 
+                externalPoints={editorPoints}
+                externalSmooth={editorSmooth}
               />
             </div>
-            <p style={{fontSize: '0.8rem', marginTop: '10px'}}>クリックで頂点を追加、ドラッグで移動</p>
+            <p style={{fontSize: '0.8rem', marginTop: '10px'}}>頂点をドラッグして微調整できます</p>
           </div>
 
-          {/* --- 矢印 --- */}
           <div style={{ display: 'flex', alignItems: 'center', fontSize: '2rem' }}>
             ➡
           </div>
 
-          {/* --- 右側: Step 2 色選択エリア --- */}
           <div className="section" style={{ width: '350px' }}>
             <h2>Step 2: 色を選ぶ</h2>
             
-            {/* ここが「独自のカラーピッカー表示図形」になります */}
             <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '8px', border: '2px solid #333', marginBottom: '20px' }}>
               <SvgShapeDisplay 
                 pathData={customPath} 
@@ -51,12 +68,11 @@ function App() {
               />
             </div>
 
-            {/* カラーピッカー本体 */}
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <SketchPicker
                 color={selectedColor}
                 onChange={(color: ColorResult) => setSelectedColor(color.hex)}
-                disableAlpha={true} // 透明度を使わない場合
+                disableAlpha={true}
               />
             </div>
           </div>
