@@ -1,0 +1,140 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+/* ...元からある App.css のスタイル... */
+
+.picker-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  gap: 20px;
+}
+
+.picker-set {
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #000;
+  text-align: center;
+  width: 300px; /* 横幅を固定 */
+}
+
+/* スライダー調整エリアのスタイル */
+.controls {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+}
+
+.controls label {
+  display: block; /* 縦に並べる */
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+
+.controls input[type="range"] {
+  width: 100%; /* 幅を親要素に合わせる */
+}
+
+/* ...元からある App.css のスタイル... */
+
+.picker-container {
+  display: flex;
+  flex-wrap: wrap; /* 画面が狭くなったら折り返す */
+  justify-content: space-around; /* 均等に配置 */
+  width: 100%;
+  gap: 20px; /* 各セットの間に隙間を空ける */
+}
+
+.picker-set {
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #000; /* 黒い枠線 */
+  text-align: center;
+}
+
+/* ... .picker-container や .picker-set のスタイルはそのまま ... */
+
+.timer-controls {
+  margin-top: 15px;
+}
+
+.timer-controls button {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+}
+
+.results-area {
+  width: 90%;
+  margin-top: 40px;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.csv-button {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #1a9661;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.results-area pre {
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}

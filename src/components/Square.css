@@ -1,0 +1,15 @@
+/* src/components/Square.css */
+
+.square {
+    width: 150px;
+    height: 150px;
+    background-color: #87ceeb;
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+}
